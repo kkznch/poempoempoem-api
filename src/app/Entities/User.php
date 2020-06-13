@@ -1,11 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Entities;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class User
+ * @package App\Entities
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -16,7 +20,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'account_id',
+        'password',
     ];
 
     /**
@@ -25,15 +30,22 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @param string $value
      */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function setPasswordAttribute(string $value = ''): void
+    {
+        $this->attributes['password'] = bcrypt($value);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function poems()
+    {
+        return $this->hasMany(Poem::class);
+    }
 }
