@@ -21,6 +21,8 @@ class CreateLikesTable extends Migration
 
             $table->foreign('poem_id')->references('id')->on('poems');
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unique(['poem_id', 'user_id']);
         });
     }
 
