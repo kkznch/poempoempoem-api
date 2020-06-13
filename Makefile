@@ -10,7 +10,8 @@ app-init:
 		chmod -R 777 /app/storage && \
 		composer install && \
 		php artisan storage:link && \
-		php artisan key:generate'
+		php artisan key:generate && \
+		php artisan jwt:secret --force'
 
 # Clear laravel cache and optimize
 app-clear:
