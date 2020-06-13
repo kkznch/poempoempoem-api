@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\App;
 
 class DatabaseSeeder extends Seeder
 {
@@ -11,6 +12,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+
+        if (App::environment() === 'production') {
+            // NOTE: 本番用マスタがあるならこっちに書く
+        } else {
+            $this->call([
+                develop\UsersTableSeeder::class,
+                develop\PoemsTableSeeder::class,
+            ]);
+        }
     }
 }
