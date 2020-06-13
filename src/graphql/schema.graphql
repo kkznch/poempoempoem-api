@@ -6,14 +6,14 @@ type Mutation {
     createPoem(
         image: Upload @rules(apply: ["required", "image"])
         text: String @rules(apply: ["required", "string"])
-    ): Poem @auth
+    ): Poem @middleware(checks: ["auth"])
     createUser(
         account_id: String @rules(apply: ["required", "unique:users,account_id"])
         password: String @bcrypt @rules(apply: ["required", "min:8"])
     ): LoginData!  @middleware(checks: ["guest"])
     likePoem(
         poem_id: ID @rules(apply: ["required", "exists:poems,id"])
-    ): Boolean! @auth
+    ): Boolean! @middleware(checks: ["auth"])
     login(
         account_id: String @rules(apply: ["required"])
         password: String @rules(apply: ["required"])

@@ -54,6 +54,17 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function likePoems()
+    {
+        return $this->belongsToMany(
+            Poem::class,
+            'likes'
+        );
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function poems()

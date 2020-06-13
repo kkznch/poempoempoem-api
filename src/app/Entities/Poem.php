@@ -19,11 +19,14 @@ class Poem extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function likes()
+    public function likeUsers()
     {
-        return $this->hasMany(Like::class);
+        return $this->belongsToMany(
+            User::class,
+            'likes'
+        );
     }
 
     /**
