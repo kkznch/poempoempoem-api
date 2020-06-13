@@ -1,21 +1,55 @@
-"A date string with format `Y-m-d`, e.g. `2011-05-23`."
-scalar Date @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Date")
+scalar Upload @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\Upload")
 
-"A datetime string with format `Y-m-d H:i:s`, e.g. `2018-05-23 13:43:32`."
-scalar DateTime @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTime")
+scalar UnixTime @scalar(class: "App\\GraphQL\\Scalars\\UnixTime")
 
-"A datetime and timezone string in ISO 8601 format `Y-m-dTH:i:sO`, e.g. `2020-04-20T13:53:12+02:00`."
-scalar DateTimeTz @scalar(class: "Nuwave\\Lighthouse\\Schema\\Types\\Scalars\\DateTimeTz")
+type Mutation {
+    createPoem(
+        image: Upload @rules(apply: ["required", "image"])
+        text: String @rules(apply: ["required", "string"])
+    ): Poem @auth
+    createUser(
+        account_id: String @rules(apply: ["required", "unique:users,account_id"])
+        password: String @bcrypt @rules(apply: ["required", "min:8"])
+    ): LoginData!  @middleware(checks: ["guest"])
+    likePoem(
+        poem_id: ID @rules(apply: ["required", "exists:poems,id"])
+    ): Boolean! @auth
+    login(
+        account_id: String @rules(apply: ["required"])
+        password: String @rules(apply: ["required"])
+    ): LoginData! @middleware(checks: ["guest"])
+}
 
 type Query {
-    users: [User!]! @paginate(defaultCount: 10)
-    user(id: ID @eq): User @find
+    me: User @auth
+}
+
+type Subscription {
+    poem: Poem @auth
+}
+
+type Like {
+    poem: Poem!
+    user: User!
+}
+
+type LoginData {
+    access_token: String
+    token_type: String
+    expires_in: Int
+    error: String
 }
 
 type User {
+    account_id: String!
+    poems: [Poem!]!
+}
+
+type Poem {
     id: ID!
-    name: String!
-    email: String!
-    created_at: DateTime!
-    updated_at: DateTime!
+    image: String!
+    text: String!
+    user: User!
+    likes: [Like!]!
+    created_at: UnixTime!
 }
