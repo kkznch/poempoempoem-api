@@ -13,6 +13,7 @@ type Mutation {
     ): LoginData!  @middleware(checks: ["guest"])
     likePoem(
         poem_id: ID @rules(apply: ["required", "exists:poems,id"])
+        is_like: Boolean @rules(apply: ["required", "boolean"])
     ): Boolean! @middleware(checks: ["auth"])
     login(
         account_id: String @rules(apply: ["required"])

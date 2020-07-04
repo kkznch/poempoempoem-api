@@ -21,7 +21,11 @@ class LikePoem
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
         $user = auth()->user();
-        $user->likePoems()->attach($args['poem_id']);
+        if ($args['is_like']) {
+            $user->likePoems()->sync($args['poem_id']);
+        } else {
+            $user->likePoems()->detach($args['poem_id']);
+        }
 
         return true;
     }
