@@ -27,6 +27,6 @@ class LikePoem
             $user->likePoems()->detach($args['poem_id']);
         }
 
-        return true;
+        return $user->likePoems()->where('poem_id', $args['poem_id'])->exists();
     }
 }
