@@ -19,6 +19,6 @@ class Poems
      */
     public function __invoke($rootValue, array $args, GraphQLContext $context, ResolveInfo $resolveInfo)
     {
-        return Poem::with('user')->get();
+        return Poem::with(['user', 'likes'])->get();
     }
 }

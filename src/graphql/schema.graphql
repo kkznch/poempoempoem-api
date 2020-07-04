@@ -26,11 +26,6 @@ type Query {
     poems: [Poem!]! @middleware(checks: ["auth"])
 }
 
-type Like {
-    poem: Poem!
-    user: User!
-}
-
 type LoginData {
     access_token: String
     token_type: String
@@ -48,6 +43,6 @@ type Poem {
     image: String!
     text: String!
     user: User!
-    likes: [Like!]!
+    likes: [User!]!
     created_at: UnixTime!
 }

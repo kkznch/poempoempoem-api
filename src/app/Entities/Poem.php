@@ -21,7 +21,7 @@ class Poem extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function likeUsers()
+    public function likes()
     {
         return $this->belongsToMany(
             User::class,
