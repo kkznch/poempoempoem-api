@@ -22,7 +22,7 @@ class LikePoem
     {
         $user = auth()->user();
         if ($args['is_like']) {
-            $user->likePoems()->sync($args['poem_id']);
+            $user->likePoems()->syncWithoutDetaching($args['poem_id']);
         } else {
             $user->likePoems()->detach($args['poem_id']);
         }
